@@ -8,7 +8,7 @@ const connectDB = async () => {
       useUnifiedTopology: true,
       useFindAndModify: false,
       useCreateIndex: true,
-      dbName: "macdartcounter",
+      dbName: "macdartscounter",
     });
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
