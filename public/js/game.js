@@ -37,7 +37,12 @@ class Game {
         this.dartsAtDouble = 0,
         // once currentgame is completed (mainscore 0) then add legscores & dartTotal to game data eg. 
         // [ {legsScores, legdartTotal} ] and reset ready for next game.
-        this.gameData = []
+        this.gameData = {
+            legScores: [],
+            dartTotal: 0,
+            dartsAtDouble: 0,
+            numberOfLegs: 0,
+        }
         // when all games are completed a submit button will then send this gameData to the database to be used for stat tracking
         
     }
@@ -83,14 +88,20 @@ class Game {
             let turnDarts = +prompt("How many darts used for checkout?")
             this.dartsAtDouble += +prompt("How many darts used on double?")
             this.legDartTotal += turnDarts
-            this.gameData.push({
-                legScores: this.legScores.map(x => x), 
-                legDartTotal: this.legDartTotal, 
-                })
+            // this.gameData.push({
+            //     legScores: this.legScores.map(x => x), 
+            //     legDartTotal: this.legDartTotal, 
+            //     dartsAtDouble: this.dartsAtDouble
+            //     })
+            this.gameData.legScores.push(this.legScores.map(x => x))
+            this.gameData.dartTotal += this.legDartTotal
+            this.gameData.dartsAtDouble += this.dartsAtDouble
+            this.gameData.numberOfLegs += 1
             this.updateMainScore()
             // this.restartGame()
             this.restartGame()
             console.log(this)
+            console.log(JSON.stringify(this.gameData))
             // in here add in post to send gameData once game is complete (best of 11 legs for test build)
 
         } else if (this.mainScore <= 50) {
@@ -113,6 +124,7 @@ class Game {
         this.mainScore = 501
         this.currentTurn = 0
         this.legDartTotal = 0
+        this.dartsAtDouble = 0
         this.legScores.splice(0, this.legScores.length)
         this.updateMainScore()
         }
