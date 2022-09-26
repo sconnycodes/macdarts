@@ -4,7 +4,7 @@ const currentTurnScoreDisplay = document.querySelector("#currentTurnScore")
 
 
 // Setting up event listeners on buttons.
-const buttons = document.querySelectorAll("button");
+const buttons = document.querySelectorAll(".gameEntryButton");
 buttons.forEach(item => {
     item.addEventListener("click", event => {
     const {target} = event;

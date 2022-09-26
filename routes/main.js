@@ -5,17 +5,19 @@ const homeController = require("../controllers/home");
 const gameController = require("../controllers/game")
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
-//Main Routes - simplified for now
+//Main Routes
 router.get("/", homeController.getIndex);
 router.get("/profile", ensureAuth, homeController.getProfile);
 router.get("/profile/settings", ensureAuth, homeController.getSettings);
 
+// Auth Routes
 router.get("/login", authController.getLogin);
 router.post("/login", authController.postLogin);
 router.get("/logout", authController.logout);
 router.get("/signup", authController.getSignup);
 router.post("/signup", authController.postSignup);
 
+//Game Routes
 router.get("/game", ensureAuth, gameController.getGame)
 router.post("/game", ensureAuth, gameController.completeGame)
 
