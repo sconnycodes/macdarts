@@ -3,7 +3,7 @@ module.exports = {
       res.render("game.ejs");
     },
     completeGame: (req, res) => {
-        console.log(req)
+        console.log(req.body)
       res.redirect("home.js")  
     }
   };

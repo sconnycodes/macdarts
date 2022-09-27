@@ -2,6 +2,7 @@
 const mainScoreDisplay = document.querySelector("#playerMainCount")
 const currentTurnScoreDisplay = document.querySelector("#currentTurnScore")
 
+const prevTurnScoreDisplay = document.querySelector("#prevTurnScore")
 
 // Setting up event listeners on buttons.
 const buttons = document.querySelectorAll(".gameEntryButton");
@@ -60,8 +61,10 @@ class Game {
         this.legScores.push(this.currentTurn)
             //calc mainscore
         this.mainScore -= this.currentTurn
+        // update prev turn score
+        prevTurnScoreDisplay.innerText = this.currentTurn
         }
-        //check if main is 0 and end game
+        //check if main is 0 and end gamethis.legDartTotal -= 3
         this.gameEndCheck()
     }
 
@@ -69,9 +72,14 @@ class Game {
     back(){
         //add prev turn score back to main and update display
         if (this.mainScore < 501){
-            this.mainScore += this.legScores.pop()
+            let prevTurnScore = this.legScores.pop()
+            this.mainScore += prevTurnScore
+            prevTurnScoreDisplay.innerText = this.legScores[this.legScores.length - 1]
         }
-        this.legDartTotal -= 3
+        if (this.legDartTotal > 2){
+            this.legDartTotal -= 3
+        }
+        
         this.updateMainScore()
     }
 
@@ -100,9 +108,8 @@ class Game {
             this.updateMainScore()
             // this.restartGame()
             this.restartGame()
-            console.log(this)
-            console.log(JSON.stringify(this.gameData))
-            // in here add in post to send gameData once game is complete (best of 11 legs for test build)
+    
+
 
         } else if (this.mainScore <= 50) {
             this.legDartTotal += 3
@@ -128,7 +135,26 @@ class Game {
         this.legScores.splice(0, this.legScores.length)
         this.updateMainScore()
         }
+        if(!restart){
+            let submitScore = confirm("Submit data?")
+            if(submitScore){
+                this.sendData()
+            }
+        }
         
+    }
+
+    async sendData(){
+        const response = await fetch("/game", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc
+            headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(this.gameData) // body data type must match "Content-Type" header
+        });
+    return response.json(); // parses JSON response into native JavaScript objects
+  
     }
 };
 

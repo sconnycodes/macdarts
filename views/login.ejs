@@ -1,7 +1,10 @@
 <%- include('partials/header') -%>
 
-<main class="container">
-  <div class="row justify-content-center">
+<main class="container ">
+  <header class="text-center">
+    <a href="/"><img src="/imgs/default-monochrome-black.svg" class="img-fluid w-50 mb-2 mt-4" ></a>
+  </header>
+  <div class="row justify-content-center ">
     <section class="col-6 mt-5">
       <% if (locals.messages.errors) { %> <% messages.errors.forEach( el => { %>
       <div class="alert alert-danger"><%= el.msg %></div>
@@ -10,6 +13,7 @@
       <div class="alert alert-info"><%= el.msg %></div>
       <% }) %> <% } %>
       <form action="/login" method="POST">
+        <h3>Login</h3>
         <div class="mb-3">
           <label for="exampleInputEmail1" class="form-label"
             >Email address</label
@@ -31,7 +35,10 @@
             name="password"
           />
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary ">Submit</button>
+          </div>
+        
       </form>
     </section>
   </div>
