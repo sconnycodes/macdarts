@@ -139,21 +139,33 @@ class Game {
             let submitScore = confirm("Submit data?")
             if(submitScore){
                 this.sendData()
+            } else {
+                window.location("/profile")
             }
         }
         
     }
 
+    // Send game data to server for storage
     async sendData(){
-        const response = await fetch("/game", {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc
+        try{
+            const response = await fetch("/game", {
+            method: 'POST', 
             headers: {
             'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
+            
             },
-            body: JSON.stringify(this.gameData) // body data type must match "Content-Type" header
-        });
-    return response.json(); // parses JSON response into native JavaScript objects
+            // Need to stringify in order to send data over http(?)
+            body: JSON.stringify(this.gameData) 
+            });
+            if(response.status == 201){
+                
+            }
+        } catch (err) {
+            console.log(err)
+        }
+        
+    
   
     }
 };
