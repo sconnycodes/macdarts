@@ -2,15 +2,30 @@
 <%- include("partials/navbar") -%>
 
 
-<div class="container text-center">
+<div class="container text-center align-item-center">
   <div class="row">
       <div class="col">
-          <div>
-              <p><strong>User Name</strong>: <%= user.userName %></p>
-              
-             
+          
+          
+          <div class="card col-10 col-md-6 mx-auto mt-2" >
+              <!-- <img src="..." class="card-img-top" alt="..."> -->
+                <div class="card-body">
+                  <h5 class="card-title">Welcome <%= user.userName %>!</h5>
+                  
+                </div>
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">Average:</li>
+                  <li class="list-group-item">Avg. Darts Per Leg:</li>
+                  <li class="list-group-item">Doubles %:</li>
+                </ul>
+                <div class="card-body">
+                  <a href="#" class="card-link">Card link</a>
+                  <a href="#" class="card-link">Another link</a>
+                </div>
+              </div>
+              <br>
               <a href="/game" class="col-3 btn btn-primary">New Game</a>
-          </div>
+          
           
       </div>  
     </div>
