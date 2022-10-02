@@ -27,8 +27,9 @@ buttons.forEach(item => {
 
 // game setup as object
 class Game {
-    constructor(startNumber) {
-        this.mainScore = startNumber || 501,
+    constructor(gameID) {
+        this.gameID = gameID,
+        this.mainScore = 501,
         this.currentTurn = 0,
         mainScoreDisplay.innerText = this.mainScore,
         // keep track of scores in leg & number of darts taken
@@ -53,21 +54,30 @@ class Game {
         //sub currentTurn score from mainScore and update display
         this.currentTurn = parseInt(currentTurnScoreDisplay.innerText)
         // check number is valid (180 & below but without being more than total remaining or leaving a mainscore of 1)
-        if (this.currentTurn > 180 || this.currentTurn > this.mainScore || (this.mainScore - this.currentTurn == 1) || !this.currentTurn){
+        if (this.currentTurn === 0) {
+            this.nextUpdate()
+        
+        } else if (this.currentTurn > 180 || this.currentTurn > this.mainScore || (this.mainScore - this.currentTurn == 1) || !this.currentTurn) {
             this.updateMainScore()
-            alert("Invalid score")
+            alert("Invalid score") 
         } else {
-            // add currentTurn score to array of scores
+            this.nextUpdate()
+        }
+        
+    }
+
+    //update game data on "next" click
+    nextUpdate(){
+    // add currentTurn score to array of scores
         this.legScores.push(this.currentTurn)
             //calc mainscore
         this.mainScore -= this.currentTurn
         // update prev turn score
         prevTurnScoreDisplay.innerText = this.currentTurn
-        }
+
         //check if main is 0 and end gamethis.legDartTotal -= 3
         this.gameEndCheck()
     }
-
     //function to run when back is clicked
     back(){
         //add prev turn score back to main and update display
@@ -155,12 +165,15 @@ class Game {
             'Content-Type': 'application/json'
             
             },
-            // Need to stringify in order to send data over http(?)
+            // Need to stringify in order to send data over http(?my understanding anyway)
             body: JSON.stringify(this.gameData) 
             });
-            if(response.status == 201){
-                
+            
+            const {url, redirected} = response
+            if(redirected){
+                window.location.href = url
             }
+
         } catch (err) {
             console.log(err)
         }

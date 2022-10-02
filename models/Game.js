@@ -6,11 +6,25 @@ const GameSchema = new mongoose.Schema({
     required: true,
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
     required: true,
   },
- 
+  legScores:{
+    type: Array,
+    required: true,
+  },
+  dartTotal:{
+    type: Number,
+    required: true,
+  },
+  dartsAtDouble:{
+    type: Number,
+    required: true,
+  },
+  numberOfLegs:{
+    type: Number,
+    required: true,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

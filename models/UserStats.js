@@ -1,26 +1,39 @@
 const mongoose = require("mongoose");
 
 const UserStatsSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+  userName: {
+    type: String,
     required: true,
   },
   average: {
     type: Number,
     required: true,
+    default: 0,
   },
   firstNineAvg: {
     type: Number,
     required: true,
+    default: 0,
   },
   avgDartsPerLeg: {
     type: Number,
     required: true,
+    default: 0,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  legsPlayed: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  gamesPlayed: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  dartsAtDouble: {
+    type: Number,
+    required: true,
+    default: 0,
   },
 });
 

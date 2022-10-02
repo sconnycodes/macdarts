@@ -1,6 +1,7 @@
 const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
+const UserStats = require("../models/UserStats");
 
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -90,6 +91,11 @@ exports.postSignup = (req, res, next) => {
     password: req.body.password,
   });
 
+  const userStats = new UserStats({
+    userName: req.body.userName,
+
+  })
+ 
   User.findOne(
     { $or: [{ email: req.body.email }, { userName: req.body.userName }] },
     (err, existingUser) => {
@@ -106,10 +112,16 @@ exports.postSignup = (req, res, next) => {
         if (err) {
           return next(err);
         }
+        
         req.logIn(user, (err) => {
           if (err) {
             return next(err);
           }
+          userStats.save((err) => {
+            if(err){
+              return next(err)
+            }
+          })
           res.redirect("/profile");
         });
       });
