@@ -27,6 +27,11 @@ DB_STRING = *mongodb connection string*
 ```
 npm run start
 ```
+### To be added:
+* [ ] Dark mode toggle
+* [ ] Averages during game
+* [ ] Profile pictures
+* [ ] Leaderboard
 
 ## Help
 Reach out to me on here or via twitter @sconnycodes for any queries or assistance.
