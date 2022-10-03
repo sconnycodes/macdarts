@@ -11,12 +11,12 @@ The app currently follows the standard rules for a game of 501.
 
 ### Installing
 
-* Clone repo
-* ```
+* Fork/Clone repo 
+```
 npm install
 ```
 * Setup the following .env variables
- ```
+```
 PORT = *desired port number*
 DB_STRING = *mongodb connection string*
 ```
