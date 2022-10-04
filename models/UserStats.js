@@ -35,6 +35,16 @@ const UserStatsSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  dartTotal: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  doublePercentage: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("UserStats", UserStatsSchema);

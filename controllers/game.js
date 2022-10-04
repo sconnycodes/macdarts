@@ -9,8 +9,9 @@ module.exports = {
       try {
         console.log(req.user.userName)
         
-        let gamesPlayed = await UserStats.findOne({userName: req.user.userName})
-        let gameIDnum = (gamesPlayed.gamesPlayed + 1)
+        let userStats = await UserStats.findOne({userName: req.user.userName})
+
+        let gameIDnum = (userStats.gamesPlayed + 1)
         
         const result = await Game.create({
           gameID: gameIDnum,
@@ -20,9 +21,16 @@ module.exports = {
           dartsAtDouble: req.body.dartsAtDouble,
           numberOfLegs: req.body.numberOfLegs,
         });
-        console.log(result)
-        gamesPlayed.gamesPlayed = gameIDnum; 
-        await gamesPlayed.save()
+       
+        userStats.gamesPlayed = gameIDnum; 
+        userStats.legsPlayed += result.numberOfLegs
+        userStats.dartsAtDouble += result.dartsAtDouble
+        userStats.dartTotal += result.dartTotal
+        //3 dart avg, consider renaming in model
+        userStats.average = ((userStats.legsPlayed * 501) / userStats.dartTotal) * 3;
+        userStats.avgDartsPerLeg = userStats.dartTotal / userStats.legsPlayed;
+        userStats.doublePercentage = (userStats.legsPlayed / userStats.dartsAtDouble) * 100 ;
+        await userStats.save()
         res.redirect("/profile")
           
         

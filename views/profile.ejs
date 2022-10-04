@@ -14,9 +14,10 @@
                   
                 </div>
                 <ul class="list-group list-group-flush">
-                  <li class="list-group-item">Average:</li>
-                  <li class="list-group-item">Avg. Darts Per Leg:</li>
-                  <li class="list-group-item">Doubles %:</li>
+                  <li class="list-group-item">Average: <strong><%= userStats.average.toFixed(2)%></strong></li>
+                  <li class="list-group-item">Avg. Darts Per Leg: <strong><%= userStats.avgDartsPerLeg.toFixed(2)%></strong></li>
+                  <li class="list-group-item">Doubles %: <strong><%= userStats.doublePercentage.toFixed(2)%></strong></li>
+                  <li class="list-group-item">Total darts thrown: <strong><%= userStats.dartTotal%></strong></li>
                 </ul>
                
               </div>

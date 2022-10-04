@@ -1,11 +1,13 @@
+const UserStats = require("../models/UserStats")
+
 module.exports = {
   getIndex: (req, res) => {
     res.render("index.ejs");
   },
   getProfile: async (req, res) => {
     try {
-      
-      res.render("profile.ejs", { user: req.user });
+      let userStats = await UserStats.findOne({userName: req.user.userName})
+      res.render("profile.ejs", { user: req.user, userStats });
     } catch (err) {
       console.log(err);
     }
