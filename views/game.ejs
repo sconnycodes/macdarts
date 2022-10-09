@@ -1,8 +1,11 @@
 <%- include('partials/header') -%>
 
+
+<body class="text-bg-dark">
 <header>
   <%- include("partials/navbar") -%>
 </header>
+
 <main id="game-max-width">
   <section class="scoreScreen container mt-3 fw-bold col-md-6">
     <section class="playerScore text-center fs-1">
@@ -41,21 +44,23 @@
         
       <div class="numpad row row-cols-3 g-0 h-50 align-items-end  ">
         
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="1">1</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="2">2</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="3">3</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="4">4</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="5">5</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="6">6</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="7">7</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="8">8</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="9">9</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="back">Back</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="0">0</button>
-          <button type="button" class="btn btn-primary h-25 gameEntryButton fs-1" value="next">Next</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="1">1</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="2">2</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="3">3</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="4">4</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="5">5</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="6">6</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="7">7</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="8">8</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="9">9</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="back">Back</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="0">0</button>
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="next">Next</button>
 
       </div>
   </section>
 </main>
+
 <script src="/js/game.js"></script>
 <%- include("partials/footer") -%>
+</body>
