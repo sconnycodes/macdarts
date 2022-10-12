@@ -1,18 +1,19 @@
 <%- include('partials/header') -%>
-
-<main class="container text-center ">
+<body class="bg-dark">
+    <main class="container text-center ">
     
-    <div class="row justify-content-around mt-5 ">
-        <img src="/imgs/default-monochrome-black.svg" class="img-fluid w-75 mb-2 " alt="MacDarts logo" >
-        <p>Take your game to the next level</p>
-    </div>
-    <div class="row justify-content-evenly mt-2">
-        <a href="/login" class="col-5 btn btn-primary"> Login</a>
-        <a href="/signup" class="col-5 btn btn-primary"> Signup</a>
-    </div>
+        <div class="row justify-content-around mt-5 text-bg-dark ">
+            <img src="/imgs/default-monochrome-white.svg" class="img-fluid w-75 mb-2 " alt="MacDarts logo" >
+            <p class="mt-3 fs-4">Take your game to the next level</p>
+        </div>
+        <div class="row justify-content-evenly mt-2">
+            <a href="/login" class="col-5 btn btn-primary"> Login</a>
+            <a href="/signup" class="col-5 btn btn-primary"> Signup</a>
+        </div>
+            
+        
+    </main>
         
     
-</main>
-    
-
-<%- include('partials/footer') -%>
+    <%- include('partials/footer') -%>
+</body>
