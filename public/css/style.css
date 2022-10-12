@@ -1,0 +1,8 @@
+#marketingSpiel {
+    border: dashed white 3px;
+}
+
+#footerLinkHover:hover {
+    background-color: #ffc107;
+    color: black;
+}
