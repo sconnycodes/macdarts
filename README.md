@@ -28,7 +28,7 @@ DB_STRING = *mongodb connection string*
 npm run start
 ```
 ### To be added:
-* [ ] Dark mode toggle
+* [ ] Dark/Light mode toggle
 * [ ] Averages during game
 * [ ] Score check/remaining preview ingame
 * [ ] Profile pictures
