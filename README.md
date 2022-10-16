@@ -34,6 +34,7 @@ npm run start
 * [ ] Profile pictures
 * [ ] Leaderboard
 * [ ] Snazzy marketing spiel 
+* [ ] More auth options (eg. Github, Google, Twitter, Discord, etc)
 
 ## Help
 Reach out to me on here or via twitter @sconnycodes for any queries or assistance.
