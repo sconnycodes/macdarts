@@ -35,6 +35,7 @@ npm run start
 * [ ] Leaderboard
 * [ ] Snazzy marketing spiel 
 * [ ] More auth options (eg. Github, Google, Twitter, Discord, etc)
+* [ ] Post-game summary screen
 
 ## Help
 Reach out to me on here or via twitter @sconnycodes for any queries or assistance.
