@@ -3,6 +3,8 @@ const mainScoreDisplay = document.querySelector("#playerMainCount")
 const currentTurnScoreDisplay = document.querySelector("#currentTurnScore")
 
 const prevTurnScoreDisplay = document.querySelector("#prevTurnScore")
+const averageDisplay = document.querySelector("#average")
+const first9averageDisplay = document.querySelector("#first9avg")
 
 // Setting up event listeners on buttons.
 const buttons = document.querySelectorAll(".gameEntryButton");
@@ -34,6 +36,8 @@ class Game {
         mainScoreDisplay.innerText = this.mainScore,
         // keep track of scores in leg & number of darts taken
         this.legScores = [],
+        this.first9total = 0,
+        this.average = 0,
         this.legDartTotal = 0,
         // tracking total darts used at double, this can be used to track double %
         this.dartsAtDouble = 0,
@@ -44,6 +48,7 @@ class Game {
             dartTotal: 0,
             dartsAtDouble: 0,
             numberOfLegs: 0,
+            first9total: 0,
         }
         // when all games are completed a submit button will then send this gameData to the database to be used for stat tracking
         
