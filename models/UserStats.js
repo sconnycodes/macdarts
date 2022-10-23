@@ -45,6 +45,11 @@ const UserStatsSchema = new mongoose.Schema({
     required: true,
     default: 0,
   },
+  firstNineTotal: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
 });
 
 module.exports = mongoose.model("UserStats", UserStatsSchema);

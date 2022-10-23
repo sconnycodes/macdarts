@@ -5,6 +5,7 @@ const currentTurnScoreDisplay = document.querySelector("#currentTurnScore")
 const prevTurnScoreDisplay = document.querySelector("#prevTurnScore")
 const averageDisplay = document.querySelector("#average")
 const first9averageDisplay = document.querySelector("#first9avg")
+const legsPlayedDisplay = document.querySelector("#legsPlayed")
 
 // Setting up event listeners on buttons.
 const buttons = document.querySelectorAll(".gameEntryButton");
@@ -36,11 +37,14 @@ class Game {
         mainScoreDisplay.innerText = this.mainScore,
         // keep track of scores in leg & number of darts taken
         this.legScores = [],
-        this.first9total = 0,
+        
         this.average = 0,
         this.legDartTotal = 0,
+        this.scoredSoFar = 0,
         // tracking total darts used at double, this can be used to track double %
         this.dartsAtDouble = 0,
+        //total of first 9 darts / 3
+        this.firstNineDarts = 0,
         // once currentgame is completed (mainscore 0) then add legscores & dartTotal to game data eg. 
         // [ {legsScores, legdartTotal} ] and reset ready for next game.
         this.gameData = {
@@ -48,7 +52,10 @@ class Game {
             dartTotal: 0,
             dartsAtDouble: 0,
             numberOfLegs: 0,
-            first9total: 0,
+            //total Score in first 9
+            firstNineTotal: 0,
+            
+            
         }
         // when all games are completed a submit button will then send this gameData to the database to be used for stat tracking
         
@@ -77,9 +84,12 @@ class Game {
         this.legScores.push(this.currentTurn)
             //calc mainscore
         this.mainScore -= this.currentTurn
+        this.scoredSoFar += this.currentTurn
         // update prev turn score
         prevTurnScoreDisplay.innerText = this.currentTurn
-
+        
+        
+        
         //check if main is 0 and end gamethis.legDartTotal -= 3
         this.gameEndCheck()
     }
@@ -89,10 +99,16 @@ class Game {
         if (this.mainScore < 501){
             let prevTurnScore = this.legScores.pop()
             this.mainScore += prevTurnScore
+            this.scoredSoFar -= prevTurnScore
+            if(this.legDartTotal <= 9){
+                this.gameData.firstNineTotal -= prevTurnScore
+                this.firstNineDarts -= 1
+            }
             prevTurnScoreDisplay.innerText = this.legScores[this.legScores.length - 1]
         }
         if (this.legDartTotal > 2){
             this.legDartTotal -= 3
+            this.gameData.dartTotal -= 3
         }
         
         this.updateMainScore()
@@ -102,22 +118,24 @@ class Game {
     updateMainScore(){
         currentTurnScoreDisplay.innerText = ""
         mainScoreDisplay.innerText = this.mainScore
+        averageDisplay.innerText = (this.scoredSoFar / (this.gameData.dartTotal / 3)).toFixed(2) 
+        first9averageDisplay.innerText = (this.gameData.firstNineTotal / this.firstNineDarts).toFixed(2)
     }
 
     // check if score is 0 and push current game to gameData if so.
     gameEndCheck(){
+        if (this.legDartTotal < 9){
+            this.gameData.firstNineTotal += this.currentTurn
+            this.firstNineDarts += 1
+        }
         if (this.mainScore == 0){
             // last turn may take fewer than 3 darts so prompt for this & number of darts attempted on double
+            
             let turnDarts = +prompt("How many darts used for checkout?")
             this.dartsAtDouble += +prompt("How many darts used on double?")
             this.legDartTotal += turnDarts
-            // this.gameData.push({
-            //     legScores: this.legScores.map(x => x), 
-            //     legDartTotal: this.legDartTotal, 
-            //     dartsAtDouble: this.dartsAtDouble
-            //     })
-            this.gameData.legScores.push(this.legScores.map(x => x))
-            this.gameData.dartTotal += this.legDartTotal
+            this.gameData.dartTotal += turnDarts
+            this.gameData.legScores.push([this.legScores.map(x => x), this.legDartTotal])
             this.gameData.dartsAtDouble += this.dartsAtDouble
             this.gameData.numberOfLegs += 1
             this.updateMainScore()
@@ -128,12 +146,14 @@ class Game {
 
         } else if (this.mainScore <= 50) {
             this.legDartTotal += 3
+            this.gameData.dartTotal += 3
             this.currentTurn = 0
             this.dartsAtDouble += +prompt("How many darts used on double?")
             this.updateMainScore()
         } else {
             //each score that doesn't result in mainscore 0 will add 3 darts to total
             this.legDartTotal += 3
+            this.gameData.dartTotal += 3
             this.currentTurn = 0
             this.updateMainScore()
         }
@@ -164,6 +184,7 @@ class Game {
     // Send game data to server for storage
     async sendData(){
         try{
+            console.log(this.gameData)
             const response = await fetch("/game", {
             method: 'POST', 
             headers: {

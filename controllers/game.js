@@ -20,14 +20,17 @@ module.exports = {
           dartTotal: req.body.dartTotal,
           dartsAtDouble: req.body.dartsAtDouble,
           numberOfLegs: req.body.numberOfLegs,
+          firstNineTotal: req.body.firstNineTotal,
         });
        
         userStats.gamesPlayed = gameIDnum; 
         userStats.legsPlayed += result.numberOfLegs
         userStats.dartsAtDouble += result.dartsAtDouble
         userStats.dartTotal += result.dartTotal
+        userStats.firstNineTotal += result.firstNineTotal
         //3 dart avg, consider renaming in model
         userStats.average = ((userStats.legsPlayed * 501) / userStats.dartTotal) * 3;
+        userStats.firstNineAvg = (userStats.firstNineTotal / (userStats.legsPlayed * 3)).toFixed(2)
         userStats.avgDartsPerLeg = userStats.dartTotal / userStats.legsPlayed;
         userStats.doublePercentage = (userStats.legsPlayed / userStats.dartsAtDouble) * 100 ;
         await userStats.save()
