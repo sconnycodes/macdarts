@@ -58,6 +58,6 @@ app.use("/", mainRoutes);
 app.use("/main", mainRoutes);
 
 //Server Running
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT || 5000, () => {
   console.log("Server is running, you better catch it!");
 });
