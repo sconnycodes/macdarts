@@ -16,14 +16,22 @@ const GameSchema = new mongoose.Schema({
   dartTotal:{
     type: Number,
     required: true,
+    default: 0,
   },
   dartsAtDouble:{
     type: Number,
     required: true,
+    default: 0,
   },
   numberOfLegs:{
     type: Number,
     required: true,
+    default: 0,
+  },
+  firstNineTotal:{
+    type: Number,
+    required: true,
+    default: 0,
   },
   createdAt: {
     type: Date,
