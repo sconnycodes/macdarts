@@ -7,6 +7,8 @@ const averageDisplay = document.querySelector("#average")
 const first9averageDisplay = document.querySelector("#first9avg")
 const legsPlayedDisplay = document.querySelector("#legsPlayed")
 
+const clearButton = document.querySelector("#clearButton")
+
 // Setting up event listeners on buttons.
 const buttons = document.querySelectorAll(".gameEntryButton");
 buttons.forEach(item => {
@@ -27,6 +29,10 @@ buttons.forEach(item => {
     })
 });
 
+//clear button to delete whatever is in current turn score display
+clearButton.addEventListener("click", () => {
+    currentTurnScoreDisplay.innerText = ""
+});
 
 // game setup as object
 class Game {

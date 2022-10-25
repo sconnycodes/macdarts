@@ -21,12 +21,7 @@
         
         <span id="prevTurnScore" class="fw-semibold align-bottom"></span> -->
         <div class="row justify-content-center ">
-          <div class="col-6  text-end">
-            Current turn:
-          </div>
-          <div class="col-6 text-start border" id="currentTurnScore">
-            
-          </div>
+          
           <div class="col-6 text-end">
             Previous turn:
           </div>
@@ -45,6 +40,15 @@
           <div class="col-6 text-start" id="first9avg">
             
           </div>
+          <div class="col-6  text-end">
+            Current turn:
+          </div>
+          <div class="col-6 text-start border" id="currentTurnScore">
+            
+          </div>
+         
+          
+          
           <!-- <div class="col-6 text-end">
             Legs Played:
           </div>
@@ -59,9 +63,14 @@
   </section>
 
   <section class="numpadHolder container col-md-8 mx-auto pt-4">
-        
+    <div class="row mb-2"> 
+        <div class="col-12  text-end ">
+        <button type="button" class="btn btn-primary border border-light w-100" value="clear" id="clearButton">Clear</button>       
+        </div>
+    </div>
+    
       <div class="numpad row row-cols-3 g-0 h-50 align-items-end  ">
-        
+
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="1">1</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="2">2</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="3">3</button>
@@ -74,7 +83,7 @@
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="back">Back</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="0">0</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="next">Next</button>
-
+          
       </div>
   </section>
 </main>
