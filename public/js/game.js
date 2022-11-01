@@ -9,6 +9,8 @@ const legsPlayedDisplay = document.querySelector("#legsPlayed")
 
 const clearButton = document.querySelector("#clearButton")
 
+
+
 // Setting up event listeners on buttons.
 const buttons = document.querySelectorAll(".gameEntryButton");
 buttons.forEach(item => {
@@ -33,6 +35,28 @@ buttons.forEach(item => {
 clearButton.addEventListener("click", () => {
     currentTurnScoreDisplay.innerText = ""
 });
+
+
+// Modals initialise
+    // Methods for Modals for double & checkout number of darts
+async function doubleDartsModalShow(){
+    // Modal for game end (checking number of darts at double and darts for checkout)
+    const doublesModal = new bootstrap.Modal(document.getElementById('doublesModal'))
+    doublesModal.show()
+    
+    let answer = await new Promise((resolve,reject) => {
+        document.getElementById("doublesModal").addEventListener("click", e => {
+            console.log(e)
+            // if(e.innerText == "Confirm"){
+            //     let answer = 
+                
+            // }
+        })
+    })
+    return answer
+    }
+
+
 
 // game setup as object
 class Game {
@@ -129,13 +153,14 @@ class Game {
     }
 
     // check if score is 0 and push current game to gameData if so.
-    gameEndCheck(){
+    async gameEndCheck(){
         if (this.legDartTotal < 9){
             this.gameData.firstNineTotal += this.currentTurn
             this.firstNineDarts += 1
         }
         if (this.mainScore == 0){
             // last turn may take fewer than 3 darts so prompt for this & number of darts attempted on double
+
             
             let turnDarts = +prompt("How many darts used for checkout?")
             this.dartsAtDouble += +prompt("How many darts used on double?")
@@ -154,7 +179,9 @@ class Game {
             this.legDartTotal += 3
             this.gameData.dartTotal += 3
             this.currentTurn = 0
-            this.dartsAtDouble += +prompt("How many darts used on double?")
+            // this.dartsAtDouble += +prompt("How many darts used on double?")
+            let doubleDartsNum = await doubleDartsModalShow()
+            this.dartsAtDouble += doubleDartsNum
             this.updateMainScore()
         } else {
             //each score that doesn't result in mainscore 0 will add 3 darts to total
@@ -177,6 +204,7 @@ class Game {
         this.updateMainScore()
         }
         if(!restart){
+            
             let submitScore = confirm("Submit data?")
             if(submitScore){
                 this.sendData()
