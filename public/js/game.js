@@ -45,16 +45,25 @@ async function doubleDartsModalShow(){
     doublesModal.show()
     
     let answer = await new Promise((resolve,reject) => {
-        document.getElementById("doublesModal").addEventListener("click", e => {
+        document.getElementById("doubleConfirm").addEventListener("click", e => {
             console.log(e)
-            // if(e.innerText == "Confirm"){
-            //     let answer = 
-                
-            // }
+            
         })
     })
     return answer
-    }
+}
+
+// dartsAtDoubleModalButtons
+const dartsAtDoubleModalButtons = document.querySelectorAll(".dartsAtDoubleModalButtons")
+dartsAtDoubleModalButtons.forEach(button => {
+    button.addEventListener("click", e => {
+        dartsAtDoubleModalButtons.forEach(button => {
+            button.classList.remove("active")
+        })
+        e.target.classList.add("active")
+        console.log(e)
+    })
+})
 
 
 
