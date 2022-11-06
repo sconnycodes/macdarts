@@ -94,11 +94,12 @@
 </button> -->
 
 <!-- Modal -->
-<div class="modal fade" id="doublesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="doublesModal" 
+id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5 text-dark" id="exampleModalLabel">How many darts used on double?</h1>
+        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">How many darts used on double?</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -108,8 +109,8 @@
         <button type="button" class="btn btn-outline-primary dartsAtDoubleModalButtons" value="3">3</button>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" id="doubleConfirm">Confirm</button>
+       
+        <button type="button" class="btn btn-primary" id="doubleConfirm" data-double-darts-num="0">Confirm</button>
       </div>
     </div>
   </div>

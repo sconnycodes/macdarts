@@ -45,9 +45,11 @@ async function doubleDartsModalShow(){
     doublesModal.show()
     
     let answer = await new Promise((resolve,reject) => {
+        
         document.getElementById("doubleConfirm").addEventListener("click", e => {
-            console.log(e)
-            
+            let value = +e.target.dataset.doubleDartsNum
+            doublesModal.hide()
+            resolve(value)
         })
     })
     return answer
@@ -61,7 +63,7 @@ dartsAtDoubleModalButtons.forEach(button => {
             button.classList.remove("active")
         })
         e.target.classList.add("active")
-        console.log(e)
+        document.getElementById("doubleConfirm").dataset.doubleDartsNum = e.target.value
     })
 })
 
@@ -189,9 +191,13 @@ class Game {
             this.gameData.dartTotal += 3
             this.currentTurn = 0
             // this.dartsAtDouble += +prompt("How many darts used on double?")
-            let doubleDartsNum = await doubleDartsModalShow()
-            this.dartsAtDouble += doubleDartsNum
-            this.updateMainScore()
+            try {
+                let doubleDartsNum = await doubleDartsModalShow()
+                this.dartsAtDouble += doubleDartsNum
+                this.updateMainScore()
+            } catch (error) {
+                this.updateMainScore()
+            }
         } else {
             //each score that doesn't result in mainscore 0 will add 3 darts to total
             this.legDartTotal += 3
