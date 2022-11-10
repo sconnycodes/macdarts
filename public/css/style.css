@@ -6,3 +6,5 @@
     background-color: #ffc107;
     color: black;
 }
+
+button { touch-action: manipulation; }
