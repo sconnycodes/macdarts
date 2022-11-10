@@ -46,9 +46,7 @@
           <div class="col-6 text-start border" id="currentTurnScore">
             
           </div>
-         
-          
-          
+          <!-- Legs played div to be added later -->
           <!-- <div class="col-6 text-end">
             Legs Played:
           </div>
@@ -70,7 +68,6 @@
     </div>
     
       <div class="numpad row row-cols-3 g-0 h-50 align-items-end  ">
-
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="1">1</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="2">2</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="3">3</button>
@@ -82,35 +79,87 @@
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="9">9</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="back">Back</button>
           <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="0">0</button>
-          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="next">Next</button>
-          
+          <button type="button" class="btn btn-primary border border-light h-25 gameEntryButton fs-1" value="next">Next</button>       
       </div>
   </section>
 </main>
 
-<!-- Button trigger modal
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button> -->
 
-<!-- Modal -->
+
+<!-- Doubles Modal -->
 <div class="modal fade" id="doublesModal" 
 id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">How many darts used on double?</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close" id="doubleClose" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body d-flex justify-content-evenly">
         <button type="button" class="btn btn-outline-primary dartsAtDoubleModalButtons active" value="0">0</button>
         <button type="button" class="btn btn-outline-primary dartsAtDoubleModalButtons" value="1">1</button>
         <button type="button" class="btn btn-outline-primary dartsAtDoubleModalButtons" value="2">2</button>
         <button type="button" class="btn btn-outline-primary dartsAtDoubleModalButtons" value="3">3</button>
       </div>
       <div class="modal-footer">
-       
         <button type="button" class="btn btn-primary" id="doubleConfirm" data-double-darts-num="0">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout Modal -->
+<div class="modal fade" id="checkoutModal" 
+id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">How many darts used for checkout?</h1>
+        <button type="button" class="btn-close" id="checkoutClose" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex justify-content-evenly">
+        <button type="button" class="btn btn-outline-primary checkoutModalButtons active " value="0">0</button>
+        <button type="button" class="btn btn-outline-primary checkoutModalButtons" value="1">1</button>
+        <button type="button" class="btn btn-outline-primary checkoutModalButtons" value="2">2</button>
+        <button type="button" class="btn btn-outline-primary checkoutModalButtons" value="3">3</button>
+      </div>
+      <div class="modal-footer">
+       
+        <button type="button" class="btn btn-primary" id="checkoutConfirm" data-checkout-darts-num="0">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Start new leg -->
+<div class="modal fade" id="restartModal" 
+id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">Play another leg?</h1>
+        <button type="button" class="btn-close" id="restartClose" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex justify-content-evenly">
+        <button type="button" class="btn btn-danger me-2" id="restartNo" >No</button>
+        <button type="button" class="btn btn-success" id="restartYes" >Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Submit game data -->
+<div class="modal fade" id="submitDataModal" 
+id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5 text-dark" id="staticBackdropLabel">Save game data?</h1>
+        <button type="button" class="btn-close" id="submitDataClose" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body d-flex justify-content-evenly">  
+        <button type="button" class="btn btn-danger me-2" id="submitDataNo" >No</button>
+        <button type="button" class="btn btn-success" id="submitDataYes" >Yes</button>
       </div>
     </div>
   </div>
