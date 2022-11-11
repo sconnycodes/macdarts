@@ -2,6 +2,8 @@
 
 A dart scoring and stat tracking app.
 
+Visit https://macdarts.cyclic.app/ to see it in action!
+
 ## Description
 
 This app is for those who play darts and want a simple scorer which includes stat tracking.
@@ -29,7 +31,7 @@ npm run start
 ```
 ### To be added:
 * [ ] Dark/Light mode toggle
-* [ ] Averages during game
+* [X] Averages during game
 * [ ] Score check/remaining preview ingame
 * [ ] Profile pictures
 * [ ] Leaderboard
