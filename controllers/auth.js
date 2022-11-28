@@ -132,26 +132,26 @@ exports.postSignup = (req, res, next) => {
   );
 };
 
-// exports.passwordResetRequest = async (email) => {
-//   const user = await User.findOne({ email });
+exports.passwordResetRequest = async (req) => {
+  const user = await User.findOne({ email: req.body.email });
 
-//   if (!user) {
-//       // send to confirm page
-//   }
-//   let token = await Token.findOne({ userId: user._id });
-//   if (token) { 
-//         await token.deleteOne()
-//   };
-//   let resetToken = crypto.randomBytes(32).toString("hex");
-//   const hash = await bcrypt.hash(resetToken, 10);
+  if (!user) {
+      // send to confirm page
+  }
+  let token = await Token.findOne({ userId: user._id });
+  if (token) { 
+        await token.deleteOne()
+  };
+  let resetToken = crypto.randomBytes(32).toString("hex");
+  const hash = await bcrypt.hash(resetToken, 10);
 
-//   await new Token({
-//     userId: user._id,
-//     token: hash,
-//     createdAt: Date.now(),
-//   }).save();
+  await new Token({
+    userId: user._id,
+    token: hash,
+    createdAt: Date.now(),
+  }).save();
 
-//   const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
-//   sendEmail(user.email,"Password Reset Request",{name: user.name,link: link,},"./template/requestResetPassword.handlebars");
-//   return link;
-// };
+  const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
+  sendEmail(user.email,"Password Reset Request",{name: user.name,link: link,},"./template/requestResetPassword.handlebars");
+  return link;
+};
