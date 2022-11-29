@@ -5,6 +5,7 @@ const UserStats = require("../models/UserStats");
 const Token = require("../models/PassResToken");
 const { randomBytes } = require("node:crypto");
 const bcrypt = require("bcrypt");
+const emailer = require("../middleware/emailer")
 
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -132,7 +133,16 @@ exports.postSignup = (req, res, next) => {
   );
 };
 
-exports.passwordResetRequest = async (req) => {
+exports.getPasswordReset = (req, res) => {
+  if (req.user) {
+    return res.redirect("/profile");
+  } else {
+    return res.redirect("/passwordReset")
+  }
+  
+};
+
+exports.postPasswordReset = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
@@ -151,7 +161,8 @@ exports.passwordResetRequest = async (req) => {
     createdAt: Date.now(),
   }).save();
 
-  const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
+  const link = `macdarts.markmac.dev/passwordResetConfirm?token=${resetToken}&id=${user._id}`;
+  
   sendEmail(user.email,"Password Reset Request",{name: user.name,link: link,},"./template/requestResetPassword.handlebars");
   return link;
 };
