@@ -5,7 +5,13 @@ const UserStats = require("../models/UserStats");
 const Token = require("../models/PassResToken");
 const { randomBytes } = require("node:crypto");
 const bcrypt = require("bcrypt");
-const { transporter } = require("../middleware/emailer")
+
+const { send } = require("../middleware/emailer")
+const crypto = require("crypto")
+
+const ejs = require("ejs")
+
+
 
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -136,9 +142,12 @@ exports.postSignup = (req, res, next) => {
 exports.getPasswordReset = (req, res) => {
   if (req.user) {
     return res.redirect("/profile");
-  } else {
-    return res.redirect("/passwordReset")
-  }
+  } 
+  
+  res.render("passwordReset", {
+    title: "Password Reset",
+  });
+  
   
 };
 
@@ -162,17 +171,29 @@ exports.postPasswordReset = async (req, res) => {
   }).save();
 
   const link = `macdarts.markmac.dev/passwordResetConfirm?token=${resetToken}&id=${user._id}`;
-  
-  const resetEmail = render("../emailTemplates/passwordReset.ejs", { name: user.name, link: link, })
+ 
 
+  const resetEmail = await ejs.renderFile("./emailTemplates/passwordReset.ejs", { name: user.userName, link: link, })
+
+  
   const mailOptions = {
-    from: '"User Support" <usersupport@markmac.dev>',
+    from: '"Support @ MacDarts" <usersupport@markmac.dev>',
     to: user.email,
     subject: 'Password Reset',
     html: resetEmail,
   }
-  transporter.sendEmail(mailOptions);
-  return link;
+  
+  await send(mailOptions, (error) => {
+        if (error) {
+        return console.log(error);
+        }
+        console.log('Successfully sent');
+        
+  });
+  
+  res.redirect("/login")
+  
+
 };
 
 exports.resetPassword = async (userId, token, password) => {
