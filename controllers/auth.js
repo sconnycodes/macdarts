@@ -5,7 +5,7 @@ const UserStats = require("../models/UserStats");
 const Token = require("../models/PassResToken");
 const { randomBytes } = require("node:crypto");
 const bcrypt = require("bcrypt");
-const emailer = require("../middleware/emailer")
+const { transporter } = require("../middleware/emailer")
 
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -163,6 +163,42 @@ exports.postPasswordReset = async (req, res) => {
 
   const link = `macdarts.markmac.dev/passwordResetConfirm?token=${resetToken}&id=${user._id}`;
   
-  sendEmail(user.email,"Password Reset Request",{name: user.name,link: link,},"./template/requestResetPassword.handlebars");
+  const resetEmail = render("../emailTemplates/passwordReset.ejs", { name: user.name, link: link, })
+
+  const mailOptions = {
+    from: '"User Support" <usersupport@markmac.dev>',
+    to: user.email,
+    subject: 'Password Reset',
+    html: resetEmail,
+  }
+  transporter.sendEmail(mailOptions);
   return link;
+};
+
+exports.resetPassword = async (userId, token, password) => {
+  let passwordResetToken = await Token.findOne({ userId });
+  if (!passwordResetToken) {
+    throw new Error("Invalid or expired password reset request");
+  }
+  const isValid = await bcrypt.compare(token, passwordResetToken.token);
+  if (!isValid) {
+    throw new Error("Invalid or expired password reset request");
+  }
+  const hash = await bcrypt.hash(password, Number(bcryptSalt));
+  await User.updateOne(
+    { _id: userId },
+    { $set: { password: hash } },
+    { new: true }
+  );
+  const user = await User.findById({ _id: userId });
+  sendEmail(
+    user.email,
+    "Password Reset Successfully",
+    {
+      name: user.name,
+    },
+    "./template/resetPassword.handlebars"
+  );
+  await passwordResetToken.deleteOne();
+  return true;
 };
