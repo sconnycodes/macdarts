@@ -9,7 +9,6 @@ const bcrypt = require("bcrypt");
 const { send } = require("../middleware/emailer")
 const crypto = require("crypto")
 
-const ejs = require("ejs")
 
 
 
@@ -144,9 +143,7 @@ exports.getPasswordReset = (req, res) => {
     return res.redirect("/profile");
   } 
   
-  res.render("passwordReset", {
-    title: "Password Reset",
-  });
+  res.render("passwordReset");
   
   
 };
@@ -170,7 +167,7 @@ exports.postPasswordReset = async (req, res) => {
     createdAt: Date.now(),
   }).save();
 
-  const link = `macdarts.markmac.dev/passwordResetConfirm?token=${resetToken}&id=${user._id}`;
+  const link = `macdarts.markmac.dev/changePassword?token=${resetToken}&id=${user._id}`;
  
 
   const resetEmail = await ejs.renderFile("./emailTemplates/passwordReset.ejs", { name: user.userName, link: link, })
@@ -196,7 +193,26 @@ exports.postPasswordReset = async (req, res) => {
 
 };
 
-exports.resetPassword = async (userId, token, password) => {
+exports.getChangePassword = async (req, res) => {
+  const params = { token: req.query.token, userId: req.query.id}
+  console.log(params)
+  res.render("changePassword")
+};
+
+
+exports.postChangePassword = async (userId, token, password) => {
+  const validationErrors = []
+  if (!validator.isLength(req.body.password, { min: 8 }))
+    validationErrors.push({
+      msg: "Password must be at least 8 characters long",
+    });
+  if (req.body.password !== req.body.confirmPassword)
+    validationErrors.push({ msg: "Passwords do not match" });
+
+  if (validationErrors.length) {
+    req.flash("errors", validationErrors);
+    return res.redirect("../signup");
+  }
   let passwordResetToken = await Token.findOne({ userId });
   if (!passwordResetToken) {
     throw new Error("Invalid or expired password reset request");
@@ -212,14 +228,14 @@ exports.resetPassword = async (userId, token, password) => {
     { new: true }
   );
   const user = await User.findById({ _id: userId });
-  sendEmail(
-    user.email,
-    "Password Reset Successfully",
-    {
-      name: user.name,
-    },
-    "./template/resetPassword.handlebars"
-  );
+  // sendEmail(
+  //   user.email,
+  //   "Password Reset Successfully",
+  //   {
+  //     name: user.name,
+  //   },
+  //   "./template/resetPassword.handlebars"
+  // );
   await passwordResetToken.deleteOne();
-  return true;
+  res.redirect("/login")
 };

@@ -20,6 +20,8 @@ router.get("/signup", authController.getSignup);
 router.post("/signup", authController.postSignup);
 router.get("/passwordReset", authController.getPasswordReset)
 router.post("/passwordReset", authController.postPasswordReset)
+router.get("/changePassword", authController.getChangePassword)
+router.post("/changePassword", authController.postChangePassword)
 // router.post("/passwordResetConfirm", authController.passwordResetConfirm)
 
 //Game Routes
