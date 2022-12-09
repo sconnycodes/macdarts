@@ -200,7 +200,8 @@ exports.getChangePassword = async (req, res) => {
 };
 
 
-exports.postChangePassword = async (userId, token, password) => {
+exports.postChangePassword = async (req, res) => {
+  const params = { token: req.query.token, userId: req.query.id}
   const validationErrors = []
   if (!validator.isLength(req.body.password, { min: 8 }))
     validationErrors.push({
@@ -211,7 +212,7 @@ exports.postChangePassword = async (userId, token, password) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    return res.redirect("../signup");
+    // return res.redirect(`/changePassword?token=${params.token}&id=${params.userId}`);
   }
   let passwordResetToken = await Token.findOne({ userId });
   if (!passwordResetToken) {
