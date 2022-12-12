@@ -9,7 +9,7 @@ const bcrypt = require("bcrypt");
 const { send } = require("../middleware/emailer")
 const crypto = require("crypto")
 
-
+const ejs = require("ejs")
 
 
 exports.getLogin = (req, res) => {
@@ -159,11 +159,11 @@ exports.postPasswordReset = async (req, res) => {
         await token.deleteOne()
   };
   let resetToken = crypto.randomBytes(32).toString("hex");
-  const hash = await bcrypt.hash(resetToken, 10);
+  // const hash = await bcrypt.hash(resetToken, 10);
 
   await new Token({
     userId: user._id,
-    token: hash,
+    token: resetToken,
     createdAt: Date.now(),
   }).save();
 
@@ -195,13 +195,14 @@ exports.postPasswordReset = async (req, res) => {
 
 exports.getChangePassword = async (req, res) => {
   const params = { token: req.query.token, userId: req.query.id}
-  console.log(params)
-  res.render("changePassword")
+  
+  res.render("changePassword", { params })
 };
 
 
 exports.postChangePassword = async (req, res) => {
   const params = { token: req.query.token, userId: req.query.id}
+  console.log(params)
   const validationErrors = []
   if (!validator.isLength(req.body.password, { min: 8 }))
     validationErrors.push({
@@ -212,23 +213,41 @@ exports.postChangePassword = async (req, res) => {
 
   if (validationErrors.length) {
     req.flash("errors", validationErrors);
-    // return res.redirect(`/changePassword?token=${params.token}&id=${params.userId}`);
+    
+    const changePassURL = req.headers.referer
+    return res.redirect(changePassURL)
   }
-  let passwordResetToken = await Token.findOne({ userId });
+  
+  // if no validation errors then:
+  let passwordResetToken = await Token.findOne();
   if (!passwordResetToken) {
-    throw new Error("Invalid or expired password reset request");
+    console.log("Invalid or expired password reset request");
+    req.flash("errors", { msg:"Password reset has expired, please request again"});
+    
+    
+    return res.redirect("/passwordReset")
   }
-  const isValid = await bcrypt.compare(token, passwordResetToken.token);
+  console.log(params.token, passwordResetToken.token)
+  const isValid = await bcrypt.compare(params.token, passwordResetToken.token, (err,result) => {
+    if(err){
+      console.log(err)
+      return res.redirect("/")
+    }
+    return result
+  });
   if (!isValid) {
-    throw new Error("Invalid or expired password reset request");
+    req.flash("errors", {msg: "Password reset invalid, please request again"});
+    
+    
+    return res.redirect("/passwordReset")
   }
-  const hash = await bcrypt.hash(password, Number(bcryptSalt));
+  // const hash = await bcrypt.hash(req.body.password, Number(bcryptSalt));
   await User.updateOne(
     { _id: userId },
-    { $set: { password: hash } },
+    { $set: { password: req.body.password } },
     { new: true }
   );
-  const user = await User.findById({ _id: userId });
+  // const user = await User.findById({ _id: userId });
   // sendEmail(
   //   user.email,
   //   "Password Reset Successfully",
