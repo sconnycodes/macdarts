@@ -202,7 +202,7 @@ exports.getChangePassword = async (req, res) => {
 
 exports.postChangePassword = async (req, res) => {
   const params = { token: req.query.token, userId: req.query.id}
-  console.log(params)
+  
   const validationErrors = []
   if (!validator.isLength(req.body.password, { min: 8 }))
     validationErrors.push({
@@ -224,26 +224,19 @@ exports.postChangePassword = async (req, res) => {
     console.log("Invalid or expired password reset request");
     req.flash("errors", { msg:"Password reset has expired, please request again"});
     
-    
     return res.redirect("/passwordReset")
   }
+
   console.log(params.token, passwordResetToken.token)
-  const isValid = await bcrypt.compare(params.token, passwordResetToken.token, (err,result) => {
-    if(err){
-      console.log(err)
-      return res.redirect("/")
-    }
-    return result
-  });
+  const isValid = await bcrypt.compare(params.token, passwordResetToken.token);
+  console.log(isValid)
   if (!isValid) {
     req.flash("errors", {msg: "Password reset invalid, please request again"});
-    
-    
     return res.redirect("/passwordReset")
   }
   // const hash = await bcrypt.hash(req.body.password, Number(bcryptSalt));
   await User.updateOne(
-    { _id: userId },
+    { _id: params.userId },
     { $set: { password: req.body.password } },
     { new: true }
   );
@@ -256,6 +249,7 @@ exports.postChangePassword = async (req, res) => {
   //   },
   //   "./template/resetPassword.handlebars"
   // );
+
   await passwordResetToken.deleteOne();
   res.redirect("/login")
 };

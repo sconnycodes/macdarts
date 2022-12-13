@@ -14,11 +14,7 @@ UserSchema.pre("save", function save(next) {
   if (!user.isModified("password")) {
     return next();
   }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(user.password, salt, (err, hash) => {
+   bcrypt.hash(user.password, 10, (err, hash) => {
       if (err) {
         return next(err);
       }
@@ -26,7 +22,23 @@ UserSchema.pre("save", function save(next) {
       next();
     });
   });
+
+UserSchema.pre("updateOne", function save(next) {
+  const user = this;
+  // if (!user.isModified("password")) {
+  //  return next();
+  // }
+  
+  bcrypt.hash(user._update.$set.password, 10, (err, hash) => {
+    if (err) {
+      return next(err);
+    }
+    user._update.$set.password = hash;
+    next();
+    });
 });
+
+
 
 // Helper method for validating user's password.
 

@@ -14,7 +14,7 @@ const TokenSchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now,
-    expires: 1800,// this is the expiry time in seconds 900 = 15 minutes
+    expires: 3600,// this is the expiry time in seconds 900 = 15 minutes, 1800 = 30 minutes
   },
 });
 
@@ -22,33 +22,29 @@ const TokenSchema = new mongoose.Schema({
 // Token hash middleware.
 
 TokenSchema.pre("save", function save(next) {
-  const checktoken = this;
-  if (!checktoken.isModified("token")) {
+  const newToken = this;
+  if (!newToken.isModified("token")) {
     return next();
   }
-  bcrypt.genSalt(10, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
-    bcrypt.hash(checktoken.token, salt, (err, hash) => {
+  bcrypt.hash(newToken.token, 10, (err, hash) => {
       if (err) {
         return next(err);
       }
-      checktoken.token = hash;
+      newToken.token = hash;
       next();
     });
   });
-});
+;
 
 // Helper method for validating user's password.
 
-TokenSchema.methods.compareToken = function compareToken(
-  candidateToken,
-  cb
-) {
-  bcrypt.compare(candidateToken, this.token, (err, isMatch) => {
-    cb(err, isMatch);
-  });
-};
+// TokenSchema.methods.compareToken = function compareToken(
+//   candidateToken,
+//   cb
+// ) {
+//   bcrypt.compare(candidateToken, this.token, (err, isMatch) => {
+//     cb(err, isMatch);
+//   });
+// };
 
 module.exports = mongoose.model("Token", TokenSchema);
