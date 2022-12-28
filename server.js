@@ -23,6 +23,7 @@ connectDB();
 //Using EJS for views
 app.set("view engine", "ejs");
 
+
 //Static Folder
 app.use(express.static("public"));
 
@@ -39,7 +40,7 @@ app.use(methodOverride("_method"));
 // Setup Sessions - stored in MongoDB
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: process.env.SESH_SECRET,
     resave: false,
     saveUninitialized: false,
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
@@ -61,3 +62,4 @@ app.use("/main", mainRoutes);
 app.listen(process.env.PORT || 5000, () => {
   console.log("Server is running, you better catch it!");
 });
+

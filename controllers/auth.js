@@ -2,6 +2,15 @@ const passport = require("passport");
 const validator = require("validator");
 const User = require("../models/User");
 const UserStats = require("../models/UserStats");
+const Token = require("../models/PassResToken");
+const { randomBytes } = require("node:crypto");
+const bcrypt = require("bcrypt");
+
+const { send } = require("../middleware/emailer")
+const crypto = require("crypto")
+
+const ejs = require("ejs")
+
 
 exports.getLogin = (req, res) => {
   if (req.user) {
@@ -127,4 +136,120 @@ exports.postSignup = (req, res, next) => {
       });
     }
   );
+};
+
+exports.getPasswordReset = (req, res) => {
+  if (req.user) {
+    return res.redirect("/profile");
+  } 
+  
+  res.render("passwordReset");
+  
+  
+};
+
+exports.postPasswordReset = async (req, res) => {
+  const user = await User.findOne({ email: req.body.email });
+
+  if (!user) {
+      // send to confirm page
+  }
+  let token = await Token.findOne({ userId: user._id });
+  if (token) { 
+        await token.deleteOne()
+  };
+  let resetToken = crypto.randomBytes(32).toString("hex");
+  // const hash = await bcrypt.hash(resetToken, 10);
+
+  await new Token({
+    userId: user._id,
+    token: resetToken,
+    createdAt: Date.now(),
+  }).save();
+
+  const link = `macdarts.markmac.dev/changePassword?token=${resetToken}&id=${user._id}`;
+ 
+
+  const resetEmail = await ejs.renderFile("./emailTemplates/passwordReset.ejs", { name: user.userName, link: link, })
+
+  
+  const mailOptions = {
+    from: '"Support @ MacDarts" <usersupport@markmac.dev>',
+    to: user.email,
+    subject: 'Password Reset',
+    html: resetEmail,
+  }
+  
+  await send(mailOptions, (error) => {
+        if (error) {
+        return console.log(error);
+        }
+        console.log('Successfully sent');
+        
+  });
+  
+  res.redirect("/login")
+  
+
+};
+
+exports.getChangePassword = async (req, res) => {
+  const params = { token: req.query.token, userId: req.query.id}
+  
+  res.render("changePassword", { params })
+};
+
+
+exports.postChangePassword = async (req, res) => {
+  const params = { token: req.query.token, userId: req.query.id}
+  
+  const validationErrors = []
+  if (!validator.isLength(req.body.password, { min: 8 }))
+    validationErrors.push({
+      msg: "Password must be at least 8 characters long",
+    });
+  if (req.body.password !== req.body.confirmPassword)
+    validationErrors.push({ msg: "Passwords do not match" });
+
+  if (validationErrors.length) {
+    req.flash("errors", validationErrors);
+    
+    const changePassURL = req.headers.referer
+    return res.redirect(changePassURL)
+  }
+  
+  // if no validation errors then:
+  let passwordResetToken = await Token.findOne();
+  if (!passwordResetToken) {
+    console.log("Invalid or expired password reset request");
+    req.flash("errors", { msg:"Password reset has expired, please request again"});
+    
+    return res.redirect("/passwordReset")
+  }
+
+  console.log(params.token, passwordResetToken.token)
+  const isValid = await bcrypt.compare(params.token, passwordResetToken.token);
+  console.log(isValid)
+  if (!isValid) {
+    req.flash("errors", {msg: "Password reset invalid, please request again"});
+    return res.redirect("/passwordReset")
+  }
+  // const hash = await bcrypt.hash(req.body.password, Number(bcryptSalt));
+  await User.updateOne(
+    { _id: params.userId },
+    { $set: { password: req.body.password } },
+    { new: true }
+  );
+  // const user = await User.findById({ _id: userId });
+  // sendEmail(
+  //   user.email,
+  //   "Password Reset Successfully",
+  //   {
+  //     name: user.name,
+  //   },
+  //   "./template/resetPassword.handlebars"
+  // );
+
+  await passwordResetToken.deleteOne();
+  res.redirect("/login")
 };
