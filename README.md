@@ -2,7 +2,7 @@
 
 A dart scoring and stat tracking app.
 
-Visit https://macdarts.cyclic.app/ to see it in action!
+Visit https://macdarts.markmac.dev/ to see it in action!
 
 ## Description
 
@@ -38,6 +38,7 @@ npm run start
 * [ ] Snazzy marketing spiel 
 * [ ] More auth options (eg. Github, Google, Twitter, Discord, etc)
 * [ ] Post-game summary screen
+* [ ] Demo mode
 
 ## Help
 Reach out to me on here or via twitter @sconnycodes for any queries or assistance.
