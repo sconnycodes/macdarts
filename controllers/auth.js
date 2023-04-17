@@ -152,7 +152,8 @@ exports.postPasswordReset = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-      // send to confirm page
+      // send to confirm page (confirm page not implemented in this version, redirect to login page instead)
+      return res.redirect("/login");
   }
   let token = await Token.findOne({ userId: user._id });
   if (token) { 
