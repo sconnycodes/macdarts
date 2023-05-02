@@ -1,7 +1,7 @@
 {
-  "name": "binary-upload-boom",
+  "name": "macdarts",
   "version": "1.0.0",
-  "description": "100Devs Social Network",
+  "description": "macdarts darts counter",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
